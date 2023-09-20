@@ -1,0 +1,16 @@
+﻿@model Library.Models.Question[]
+
+@{
+    ViewBag.Title = "List of Questions";
+}
+
+<h2>List of Questions</h2>
+
+<ul>
+    @foreach (var question in Model)
+    {
+        <li>
+            <a href="@Url.Action("QuestionDetails", "Home", new { id = question.QuestionId })">@question.Title</a>
+        </li>
+    }
+</ul>

@@ -1,0 +1,49 @@
+﻿@model Library.Models.Question
+
+@{
+    ViewBag.Title = "Question Details";
+}
+
+<h2>@Model.Title</h2>
+
+<div>
+    <strong>Tags:</strong>@if (Model.Tags != null) {
+        string.Join(", ", Model.Tags);
+    }
+</div>
+
+<div>
+    <strong>Owner:</strong> <a href="@Model.Owner.Link" target="_blank">@Model.Owner.DisplayName</a>
+</div>
+
+<div>
+    <strong>Is Answered:</strong> @Model.IsAnswered
+</div>
+
+<div>
+    <strong>View Count:</strong> @Model.ViewCount
+</div>
+
+<div>
+    <strong>Answer Count:</strong> @Model.AnswerCount
+</div>
+
+<div>
+    <strong>Score:</strong> @Model.Score
+</div>
+
+<div>
+    <strong>Last Activity Date:</strong> @DateTimeOffset.FromUnixTimeSeconds(Model.LastActivityDate).DateTime
+</div>
+
+<div>
+    <strong>Creation Date:</strong> @DateTimeOffset.FromUnixTimeSeconds(Model.CreationDate).DateTime
+</div>
+
+<div>
+    <strong>Content License:</strong> @Model.ContentLicense
+</div>
+
+<div>
+    <strong>Link:</strong> <a href="@Model.Link" target="_blank">@Model.Link</a>
+</div>

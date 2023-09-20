@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Author>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Dropdown Search Table</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        .dropdown-container {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row dropdown-container">
+            <div class="col-md-3">
+                <select class="form-control" id="dropdown1">
+                    <option value="" selected disabled>Select Author</option>
+                    @foreach (var author in Model)
+                    {
+                        <option value="@author.AuthorID">@author.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6 ">
+                <select class="form-control collapse" id="dropdown2">
+                    <option value="" selected disabled>Select Book</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('dropdown1').addEventListener('change', getBookbyAuthor);
+            var bookdd = document.getElementById('dropdown2');
+           
+
+            function getBookbyAuthor() {
+                var AuthorId = document.getElementById('dropdown1').value;
+                var xhr = new XMLHttpRequest();
+                var url = '/Library/GetBooksByAuthor?authorId=' + AuthorId;
+
+                xhr.open('GET', url, true);
+
+                xhr.onload = function () {
+                    debugger;
+                    if (xhr.status >= 200 && xhr.status < 400) {
+                        var data = JSON.parse(xhr.responseText);
+                        while (bookdd.options.length > 1) {
+                            bookdd.remove(1);
+                        }
+                        data.forEach(function (book) {
+                            var option = document.createElement('option');
+                            option.value = book.BookID;
+                            option.textContent = book.Title;
+                            bookdd.appendChild(option);
+                        });
+                        bookdd.style.display = 'block';
+
+                    }
+                    else {
+                        console.error('Error: ' + xhr.status);
+                    }
+                };
+
+                xhr.onerror = function () {
+                    console.error('Network Error');
+                };
+
+                xhr.send();
+            }
+
+
+        });
+
+
+    </script>
+</body>
+</html>
